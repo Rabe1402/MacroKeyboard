@@ -172,7 +172,7 @@ void pots()
 // debug Pots
 void pots_debug()
 {
-  for (int i = 0; i < NPots; i++) // Loops through all the potentiometers
+    for (int i = 0; i < NPots; i++) // Loops through all the potentiometers
   { 
     PotCState[i] = analogRead(pots[i]); // reads the pins from arduino
 
