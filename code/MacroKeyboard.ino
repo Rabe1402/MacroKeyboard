@@ -45,7 +45,7 @@ void loop()
     {
         stausVAR = 1; // Set status variable to 1 for debug mode
         Serial.println("Debug mode activated");
-        buttons_debvug(); // debug buttons functions
+        buttons_debug(); // debug buttons functions
         pots_debug(); // debug pots functions
     }
     else 
