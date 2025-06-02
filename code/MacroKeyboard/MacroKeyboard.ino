@@ -1,5 +1,4 @@
-#include keyboard.h // kexboard for buttons maybe not used in this code
-#include MIDIUSB.h // MIDIUSB for pots
+#include "MIDIUSB.h" // MIDIUSB for pots
 
 const int NPots = 4; // Number of potentiometers
 const int pots[NPots] = {A9, A8, A7, A6}; // Potentiometer pins
@@ -34,34 +33,34 @@ byte cc = 1; //* Lowest MIDI CC to be used
 
 void setup() 
 {
-  Serial.begin(9600);
+  Serial.begin(9600); // begin serial communication for debug mode
   
-  for(int i = 0, i < NButtons, i++) // init buttons 
-    {
-        pinMode(buttons[i], INPUT_PULLUP); // butten pins with internal pullups
-    }
+  for(int i = 0; i < NButtons; i++); // init buttons 
+  {
+    pinMode(buttons[i], INPUT_PULLUP); // button pins with internal pullups
+  }
 }
 
 void loop() 
 {
-    if (digitalRead(Button1) == LOW && digitalRead(Button2) == LOW && digitalRead(Button3) == LOW ) // if first 3 buttons are pressed then go into debug mode 
+    if (digitalRead(Button1) == LOW && digitalRead(Button2) == LOW && digitalRead(Button3) == LOW ); // if first 3 buttons are pressed then go into debug mode 
     {
         stausVAR = 1; // Set status variable to 1 for debug mode
         Serial.println("Debug mode activated");
-        buttons_debug(); // debug buttons functions
-        pots_debug(); // debug pots functions
+        Buttons_debug(); // debug buttons functions
+        Pots_debug(); // debug pots functions
     }
     else 
     { 
         Serial.println("normal startup, no more information will be printed");
-        buttons(); // buttons functions
-        pots(); // pots functions
+        Buttons(); // buttons functions
+        Pots(); // pots functions
     }
 
 }
 
 // normal Buttons 
-void buttons() 
+void Buttons() 
 {
 
   for (int i = 0; i < NButtons; i++) 
@@ -93,7 +92,7 @@ void buttons()
 }
 
 // debug Buttons
-void buttons_debug() 
+void Buttons_debug() 
 {
   for (int i = 0; i < NButtons; i++) 
   {
@@ -127,7 +126,7 @@ void buttons_debug()
 }
 
 // normal Pots
-void pots()
+void Pots()
 {
   for (int i = 0; i < NPots; i++) // Loops through all the potentiometers
   { 
@@ -155,11 +154,11 @@ void pots()
 
     if (potMoving == true) // If the potentiometer is still moving, send the change control
     { 
-      if (MidiPState[i] != MidiCState[i]) 
+      if (midiPState[i] != midiCState[i]) 
       {
         // Sends  MIDI CC 
         // Use if using with ATmega32U4 (micro, pro micro, leonardo...)
-        controlChange(midiCh, cc + i, MidiCState[i]); //  (channel, CC number,  CC value)
+        controlChange(midiCh, cc + i, midiCState[i]); //  (channel, CC number,  CC value)
         MidiUSB.flush();
 
         PotPState[i] = PotCState[i]; // Stores the current reading of the potentiometer to compare with the next
@@ -170,7 +169,7 @@ void pots()
 }
 
 // debug Pots
-void pots_debug()
+void Pots_debug()
 {
   for (int i = 0; i < NPots; i++) // Loops through all the potentiometers
   { 
@@ -199,7 +198,7 @@ void pots_debug()
 
     if (potMoving == true) // If the potentiometer is still moving, send the change control
     { 
-      if (MidiPState[i] != MidiCState[i]) 
+      if (midiPState[i] != midiCState[i]) 
       {
         Serial.print("Potentiometer ");
         Serial.print(i);
@@ -207,7 +206,7 @@ void pots_debug()
         Serial.println(MidiCState[i]);
         
         // Sends MIDI CC 
-        controlChange(midiCh, cc + i, MidiCState[i]); //  (channel, CC number,  CC value)
+        controlChange(midiCh, cc + i, midiCState[i]); //  (channel, CC number,  CC value)
         MidiUSB.flush();
 
         PotPState[i] = PotCState[i]; // Stores the current reading of the potentiometer to compare with the next
